@@ -1,0 +1,33 @@
+{
+  "name": "my-whatsup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/server.js",
+  "author": {
+    "name": "Jesus",
+    "email": "jesusmares82@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./src/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.17.1",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^8.1.1",
+    "nodemo": "^1.0.0",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.6.2",
+    "socket.io": "^4.1.2",
+    "socketio-jwt": "^4.5.0",
+    "socketio-jwt-auth": "^0.2.1"
+  },
+  "devDependencies": {
+    "dotenv": "^9.0.2",
+    "nodemon": "^2.0.7"
+  }
+}
