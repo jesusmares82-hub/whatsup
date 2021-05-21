@@ -24,11 +24,11 @@ chatController.getRooms = async (req, res, next) => {
 };
 
 chatController.addRoom = async (req, res, next) => {
-  const { name, screenname, private, avatar } = req.body;
+  const { name, screenname } = req.body;
   const owner = req.user.id;
 
   try {
-    let room = await Room.create({ name, screenname, owner, private, avatar });
+    let room = await Room.create({ name, screenname, owner });
     if (room) {
       let roomObj = room.get();
       await Member.create({ userId: owner, roomId: roomObj.id });
@@ -68,12 +68,19 @@ chatController.sendMessage = async (req, res, next) => {
 chatController.getMessages = async (req, res, next) => {
   let roomId = req.params.id;
   try {
-    const response = await Room.findAll({
+    let rooms = await Room.findAll({
       attributes: ["id", "name", "screenname"],
-      include: [{ model: Message, attributes: ["id", "text"] }],
-      where: { roomId },
+      include: [
+        {
+          model: Message,
+          attributes: ["id", "text", "user_id"],
+          where: {
+            roomId,
+          },
+        },
+      ],
     });
-    return res.json(response);
+    res.json(rooms);
   } catch (error) {
     next(error);
   }

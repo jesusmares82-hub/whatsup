@@ -26,7 +26,7 @@ authController.signIn = async (req, res, next) => {
         avatar: user.avatar,
       };
       const token = jwt.sign(userData, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "8h",
       });
 
       return res.status(200).json({ user: userData, token });
@@ -40,6 +40,10 @@ authController.signUp = async (req, res, next) => {
   const { firstname, lastname, screenname, email, password } = req.body;
 
   console.log(req.body);
+
+  if (email === "" || password === "") {
+    return res.status(403).json({ message: "empty fields" });
+  }
 
   try {
     const [user, created] = await User.findOrCreate({
