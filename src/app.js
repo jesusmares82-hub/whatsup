@@ -32,6 +32,7 @@ app.use((err, req, res, next) => {
         .status(403)
         .send({ message: "Ya existe un registro con el mismo valor" });
     default:
+      console.log(err);
       return res
         .status(500)
         .send("Ups tenemos un problema en el servidor, intentalo más tarde!");

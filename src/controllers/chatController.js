@@ -1,5 +1,5 @@
 const { User, Room, Member, Message } = require("../models");
-
+const Sequelize = require("sequelize");
 const chatController = {};
 
 chatController.getRooms = async (req, res, next) => {
@@ -33,6 +33,7 @@ chatController.addRoom = async (req, res, next) => {
       let roomObj = room.get();
       await Member.create({ userId: owner, roomId: roomObj.id });
     }
+    console.log(room);
     return res.status(201).json(room);
   } catch (error) {
     next(error);
@@ -40,13 +41,41 @@ chatController.addRoom = async (req, res, next) => {
 };
 
 chatController.addMembers = async (req, res, next) => {
-  let { members } = req.body;
-  let roomId = req.params.id;
   try {
+    let { members } = req.body;
+    let roomId = req.params.id;
+
     members = members.map((member) => {
       return { userId: member, roomId };
     });
-    const membersResult = await Member.bulkCreate(members, { returning: true });
+    //console.log(members);
+    //console.log(members[0].userId);
+    let member = await Member.findAll({
+      attributes: ["user_id", "room_id"],
+      where: {
+        room_id: roomId,
+      },
+    });
+
+    let otherMember = member.map((m) => {
+      return { userId: m.dataValues.user_id, roomId: m.dataValues.room_id };
+    });
+    //console.log(otherMember);
+    //console.log(otherMember.length);
+
+    for (let j = 0; j < members.length; j++) {
+      for (let index = 0; index < otherMember.length; index++) {
+        if (members[j].userId === otherMember[index].userId) {
+          return res
+            .status(403)
+            .json({ message: "Member not added, is already in the room" });
+        }
+      }
+    }
+
+    const membersResult = await Member.bulkCreate(members, {
+      returning: true,
+    });
     return res.status(201).json(membersResult);
   } catch (error) {
     next(error);
@@ -57,9 +86,32 @@ chatController.sendMessage = async (req, res, next) => {
   const { text } = req.body;
   const userId = req.user.id;
   const roomId = req.params.id;
+  let userValid = false;
+
   try {
-    const messages = await Message.create({ userId, roomId, text });
-    return res.status(201).json(messages);
+    let member = await Member.findAll({
+      attributes: ["user_id", "room_id"],
+      where: {
+        room_id: roomId,
+      },
+    });
+
+    let otherMember = member.map((m) => {
+      return { userId: m.dataValues.user_id, roomId: m.dataValues.room_id };
+    });
+
+    for (let index = 0; index < otherMember.length; index++) {
+      if (userId === otherMember[index].userId) {
+        userValid = true;
+        //return res.status(403).json("User not valid");
+      }
+    }
+    console.log(userValid);
+    if (userValid) {
+      const messages = await Message.create({ userId, roomId, text });
+      return res.status(201).json(messages);
+    }
+    return res.status(403).json("You are not the user currently logged in");
   } catch (error) {
     next(error);
   }
@@ -100,20 +152,37 @@ chatController.deleteRoom = async (req, res, next) => {
 };
 
 chatController.deleteMembers = async (req, res, next) => {
-  const { members } = req.body;
-  const roomId = req.params.id;
+  let roomId = req.params.id;
+  let userId = req.user.id;
+  let { members } = req.body;
   try {
-    const response = await Member.destroy({
+    let results = await Member.destroy({
       where: {
-        [Op.and]: [{ room_id: roomId }, { user_id: members }],
+        [Sequelize.Op.and]: [{ user_id: members }, { room_id: roomId }],
+        [Sequelize.Op.not]: [{ user_id: userId }],
       },
     });
-    if (response) {
-      return res.status(200).json({ message: "The members has been removed" });
+    if (results) {
+      return res.status(200).json({ message: "The members have been removed" });
     }
     return res
       .status(400)
-      .json({ message: "The members has not been deleted" });
+      .json({ message: "The members have not been removed" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+chatController.getMembers = async (req, res, next) => {
+  const roomId = req.params.id;
+  try {
+    const response = await Member.findAll({
+      where: {
+        room_id: roomId,
+      },
+    });
+    console.log(response);
+    return res.status(200).json(response);
   } catch (error) {
     next();
   }

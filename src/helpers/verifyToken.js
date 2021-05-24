@@ -1,20 +1,19 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = function verifyToken(req, res, next) {
-  //Obtener el token
+  //Get the token
   let token = req.headers["authorization"];
 
   if (token) {
-    //Quitamos la palabra Bearer del valor de la cabecera authorization
+    //Remove the word Bearer from the header autorization value
     token = token.replace(/^Bearer\s+/, "");
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (decoded) {
+      //Put the decoded token into req.user
       req.user = decoded;
-      console.log("decoded", decoded);
-      return res.status(200).json({ message: "El token es valido" });
-      //return next();
+      return next();
     }
     return res.status(401).json({ message: "El token es invalido" });
   }

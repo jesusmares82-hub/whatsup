@@ -6,6 +6,7 @@ const verifyToken = require("../helpers/verifyToken.js");
 const chatController = require("../controllers/chatController");
 
 router.get("/rooms", verifyToken, chatController.getRooms);
+router.get("/rooms/:id/members", verifyToken, chatController.getMembers);
 router.post("/rooms", verifyToken, chatController.addRoom);
 router.post("/rooms/:id/addMembers", verifyToken, chatController.addMembers);
 router.post("/rooms/:id/sendMessage", verifyToken, chatController.sendMessage);

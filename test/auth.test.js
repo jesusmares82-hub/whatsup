@@ -1,6 +1,7 @@
 const { create } = require("../src/controllers/authController");
 const supertest = require("supertest");
 const app = require("../src/app");
+const request = supertest(app);
 const bcrypt = require("bcryptjs");
 const { User } = require("../src/models");
 
@@ -141,7 +142,8 @@ describe("Validación de token", () => {
 
     //Act  -> Actuar
     let response = await supertest(app).post("/api/v1/signin").send(user);
-
+    token = response.body.token;
+    console.log(token);
     //Assert
     expect(response.status).toBe(200);
 
