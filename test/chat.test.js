@@ -156,13 +156,6 @@ describe("Miembros de una sala de chat", () => {
 
     done();
   });
-
-  afterAll(async (done) => {
-    await Member.destroy({ where: { room_id: roomId } });
-    await Room.destroy({ where: { id: roomId } });
-
-    done();
-  });
 });
 
 describe("Envio de mensajes en la sala de chat Avengers", () => {
@@ -178,7 +171,6 @@ describe("Envio de mensajes en la sala de chat Avengers", () => {
     let text = {
       text: "Hello World",
     };
-    const roomId = 80;
     let response2 = await supertest(app)
       .post(`/api/v1/rooms/${roomId}/sendMessage`)
       .send(text, adminId, roomId)
@@ -205,7 +197,7 @@ describe("Envio de mensajes en la sala de chat Avengers", () => {
       .post(`/api/v1/rooms/${roomId}/sendMessage`)
       .send(text, userID, roomId)
       .set("Authorization", `Bearer ${token2}`);
-    expect(response2.status).toBe(403);
+    expect(response2.status).toBe(201);
 
     done();
   });
@@ -234,5 +226,11 @@ describe("Envio de mensajes en la sala de chat Avengers", () => {
   });
 });
 
+afterAll(async (done) => {
+  await Member.destroy({ where: { room_id: roomId } });
+  await Room.destroy({ where: { id: roomId } });
+
+  done();
+});
 //Usar la función beforeAll para poder iniciar sesión y guardar token
 //Usar la función beforeAll para poder registrar 2 usuarios antes de las pruebas sobre el set "Miembros de una sala de chat"
