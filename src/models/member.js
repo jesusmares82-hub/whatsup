@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       uniqueKeys: {
         Items_unique: {
-          fields: ["minor", "major"],
+          fields: ["userId", "roomId"],
         },
       },
     },
