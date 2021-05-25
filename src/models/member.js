@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      uniqueKeys: {
+        Items_unique: {
+          fields: ["minor", "major"],
+        },
+      },
+    },
+
+    {
       sequelize,
       modelName: "Member",
       underscored: true,
