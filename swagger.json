@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8000/api/v1",
+      "url": "http://localhost:8080/api/v1",
       "description": "Development"
     }
   ],
@@ -16,6 +16,15 @@
       "post": {
         "description": "Crea un nuevo registro de usuario",
         "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Datos del nuevo usuario"
@@ -27,9 +36,18 @@
       "post": {
         "description": "Loguea un usuario en el sistema",
         "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userLogin"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Datos del nuevo usuario"
+            "description": "Datos del usuario logueado actualmente en el chat"
           }
         }
       }
@@ -41,7 +59,7 @@
         "tags": ["Auth"],
         "responses": {
           "201": {
-            "description": "Datos del nuevo usuario"
+            "description": "Datos del usuario logueado actualmente en el chat"
           }
         }
       }
@@ -49,13 +67,289 @@
     "/rooms": {
       "get": {
         "security": [{ "jwt_token": [] }],
-        "description": "Obtiene los datos de registro del usuario autenticado",
+        "description": "Obtiene las salas de chat",
         "tags": ["Rooms"],
         "responses": {
           "201": {
             "description": "Datos del nuevo usuario"
           }
         }
+      },
+      "post": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Obtiene las salas de chat",
+        "tags": ["Rooms"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/crearSala"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Datos del nuevo usuario"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/members": {
+      "get": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Obtiene los  miembros de las salas de chat",
+        "tags": ["Rooms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id de la sala de la que se obtienen los miembros",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Se muestran los miembros que pertenecen a la sala"
+          }
+        }
+      },
+      "delete": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Borra los  miembros de una sala de chat",
+        "tags": ["Rooms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id de la sala de donde se borran los miembros",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Indica si borro los miembros de la sala"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/addMembers": {
+      "post": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Agregar un arreglo de miembros a una sala de chat",
+        "tags": ["Rooms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id de la sala a donde se agregan los miembros",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/agregaMiembros"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Se muestran los miembros que pertenecen a la sala"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/sendMessage": {
+      "post": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Enviar un mensaje a una sala de chat donde eres miembro",
+        "tags": ["Rooms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id de la sala a la que se envia el mensaje",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sendMessage"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Se muestran los miembros que pertenecen a la sala"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/messages": {
+      "get": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Obtiene los  mensajes de la sala de chat",
+        "tags": ["Rooms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id de la sala de la que se obtienen los mensajes",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Se muestran los mensajes que pertenecen a la sala"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/": {
+      "delete": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Borrar una sala de chat",
+        "tags": ["Rooms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id de la sala que se borra",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Se muestran mensaje que la sala fue borrada"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "description": "El nombre del usuario"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "El apellido del usuario"
+          },
+          "screenname": {
+            "type": "string",
+            "description": "El nickname del usuario en el chat"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email del usuario",
+            "example": "usuario@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password del usuario"
+          }
+        }
+      },
+      "userLogin": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email del usuario",
+            "example": "usuario@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password del usuario"
+          }
+        }
+      },
+      "crearSala": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nombre de la sala"
+          },
+          "screenname": {
+            "type": "string",
+            "description": "Screen Name de la sala"
+          }
+        }
+      },
+      "agregaMiembros": {
+        "properties": {
+          "members": {
+            "type": "object",
+            "description": "Id de los miembros a agregar a la sala",
+            "example": "[id1,id2]"
+          }
+        }
+      },
+      "sendMessage": {
+        "properties": {
+          "text": {
+            "type": "object",
+            "description": "Mensaje para enviar a la sala",
+            "example": "Hello World!"
+          }
+        }
+      },
+      "Room": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "El nombre de la sala de chat"
+          },
+          "screenname": {
+            "type": "string",
+            "description": "El screen name de la sala de chat"
+          },
+          "owner": {
+            "type": "object",
+            "description": "El propietario de la sala de chat",
+            "example": "usuario@mail.com"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "Avatar de la sala de chat"
+          },
+          "private": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "jwt_token": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
