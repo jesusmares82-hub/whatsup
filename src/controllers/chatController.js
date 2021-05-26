@@ -41,41 +41,14 @@ chatController.addRoom = async (req, res, next) => {
 };
 
 chatController.addMembers = async (req, res, next) => {
-  try {
-    let { members } = req.body;
-    let roomId = req.params.id;
+  let { members } = req.body;
+  let roomId = req.params.id;
 
+  try {
     members = members.map((member) => {
       return { userId: member, roomId };
     });
-    //console.log(members);
-    //console.log(members[0].userId);
-    let member = await Member.findAll({
-      attributes: ["user_id", "room_id"],
-      where: {
-        room_id: roomId,
-      },
-    });
-
-    let otherMember = member.map((m) => {
-      return { userId: m.dataValues.user_id, roomId: m.dataValues.room_id };
-    });
-    //console.log(otherMember);
-    //console.log(otherMember.length);
-
-    for (let j = 0; j < members.length; j++) {
-      for (let index = 0; index < otherMember.length; index++) {
-        if (members[j].userId === otherMember[index].userId) {
-          return res
-            .status(403)
-            .json({ message: "Member not added, is already in the room" });
-        }
-      }
-    }
-
-    const membersResult = await Member.bulkCreate(members, {
-      returning: true,
-    });
+    const membersResult = await Member.bulkCreate(members, { returning: true });
     return res.status(201).json(membersResult);
   } catch (error) {
     next(error);

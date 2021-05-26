@@ -1,0 +1,62 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "CHAT REST API",
+    "version": "1.0",
+    "description": "REST API para una aplicación de chat en tiempo real"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api/v1",
+      "description": "Development"
+    }
+  ],
+  "paths": {
+    "/signup": {
+      "post": {
+        "description": "Crea un nuevo registro de usuario",
+        "tags": ["Auth"],
+        "responses": {
+          "201": {
+            "description": "Datos del nuevo usuario"
+          }
+        }
+      }
+    },
+    "/signin": {
+      "post": {
+        "description": "Loguea un usuario en el sistema",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "Datos del nuevo usuario"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Obtiene los datos de registro del usuario autenticado",
+        "tags": ["Auth"],
+        "responses": {
+          "201": {
+            "description": "Datos del nuevo usuario"
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "get": {
+        "security": [{ "jwt_token": [] }],
+        "description": "Obtiene los datos de registro del usuario autenticado",
+        "tags": ["Rooms"],
+        "responses": {
+          "201": {
+            "description": "Datos del nuevo usuario"
+          }
+        }
+      }
+    }
+  }
+}

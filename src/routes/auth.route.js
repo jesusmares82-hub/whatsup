@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const authController = require("../controllers/authController");
-const chatController = require("../controllers/chatController");
 
 const verifyToken = require("../helpers/verifyToken.js");
 

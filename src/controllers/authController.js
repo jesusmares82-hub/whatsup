@@ -81,7 +81,7 @@ authController.getAuthenticatedUser = async (req, res, next) => {
       where: { email },
       attributes: ["id", "screenname", "email", "avatar"],
     });
-    res.json({ user });
+    return res.status(201).json(user);
   } catch (error) {
     next(error);
   }

@@ -17,13 +17,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
     },
-    {
-      uniqueKeys: {
-        Items_unique: {
-          fields: ["userId", "roomId"],
-        },
-      },
-    },
 
     {
       sequelize,
