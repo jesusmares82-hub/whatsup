@@ -9,6 +9,7 @@ const routes = require("./routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocs = require("../swagger.json");
 const fs = require("fs");
+var https = require("https");
 require("dotenv").config();
 
 //Middlewares
