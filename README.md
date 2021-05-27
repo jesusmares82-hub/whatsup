@@ -12,9 +12,9 @@
 This project uses a number of open source projects to work properly:
 ​
 
-- [node.js] - evented I/O for the backend
-- [Sequelize] - ORM for node.js apps
-- [Express] - fast node.js network app framework
+- [node.js](http://nodejs.org) - evented I/O for the backend
+- [Sequelize](https://github.com/sequelize/sequelize/blob/main/README.md) - ORM for node.js apps
+- [Express](http://expressjs.com) - fast node.js network app framework
 
 ## Installation
 
@@ -53,18 +53,8 @@ npm start
 ​
 | Plugin | README |
 | ------ | ------ |
-| Json Web Token | [plugins/jsonwebtoken/README.md][pljw] |
-| Bcryptjs | [plugins/bcryptjs/README.md][plbc] |
-| Sequelize | [plugins/googledrive/README.md][plsq] |
+| Json Web Token | [Json Web Token](https://github.com/auth0/node-jsonwebtoken/blob/master/README.md)
+| Bcryptjs | [Bcryptjs ](https://github.com/dcodeIO/bcrypt.js/blob/master/README.md) |
+| Sequelize | [Sequelize](https://github.com/sequelize/sequelize/blob/main/README.md) |
 
 **Free Software, Hell Yeah!**
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-
-​
-[sequelize]: <https://github.com/sequelize/sequelize/blob/main/README.md>
-[node.js]: <http://nodejs.org>
-[express]: <http://expressjs.com>
-​[PlJw]: <https://github.com/auth0/node-jsonwebtoken/blob/master/README.md>
-[PlBc]: <https://github.com/dcodeIO/bcrypt.js/blob/master/README.md>
-[PlSq]: <https://github.com/sequelize/sequelize/blob/main/README.md>
