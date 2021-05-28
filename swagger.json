@@ -56,27 +56,6 @@
         }
       }
     },
-    "/user": {
-      "get": {
-        "security": [{ "jwt_token": [] }],
-        "description": "Obtiene los datos de registro del usuario autenticado",
-        "tags": ["Auth"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/userEmail"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Datos del usuario logueado actualmente en el chat"
-          }
-        }
-      }
-    },
     "/rooms": {
       "get": {
         "security": [{ "jwt_token": [] }],
