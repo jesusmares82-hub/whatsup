@@ -312,15 +312,6 @@
           }
         }
       },
-      "userEmail": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "Email del usuario",
-            "example": "usuario@mail.com"
-          }
-        }
-      },
       "Room": {
         "properties": {
           "name": {
