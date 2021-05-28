@@ -61,6 +61,15 @@
         "security": [{ "jwt_token": [] }],
         "description": "Obtiene los datos de registro del usuario autenticado",
         "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userEmail"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Datos del usuario logueado actualmente en el chat"
@@ -321,6 +330,15 @@
             "type": "object",
             "description": "Mensaje para enviar a la sala",
             "example": "Hello World!"
+          }
+        }
+      },
+      "userEmail": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email del usuario",
+            "example": "usuario@mail.com"
           }
         }
       },
