@@ -1,21 +1,21 @@
 require("dotenv").config();
 
 module.exports = {
-  development: {
+  "development": {
     username: "postgres",
     password: "admin123",
     database: "whatsup",
     host: "127.0.0.1",
     dialect: "postgres",
   },
-  test: {
+  "test": {
     username: "postgres",
     password: "admin123",
     database: "whatsup",
     host: "127.0.0.1",
     dialect: "postgres",
   },
-  production: {
+  "production": {
     use_env_variable: "DATABASE_URL",
     dialectOptions: {
       ssl: {

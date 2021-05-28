@@ -1,4 +1,3 @@
-require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const app = express();
@@ -10,6 +9,7 @@ const routes = require("./routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocs = require("../swagger.json");
 const fs = require("fs");
+require("dotenv").config();
 
 //Middlewares
 app.use(cors()); //Implementará CORS en el servidor
